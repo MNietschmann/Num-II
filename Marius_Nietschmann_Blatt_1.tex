@@ -1,0 +1,294 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+
+%% margins
+\usepackage{geometry}
+\geometry{
+  left=2.5cm,
+  right=2.5cm,
+  top=2.5cm,
+  bottom=2.5cm
+}
+
+%% ams/thm
+\usepackage{amsmath, amssymb, amsthm, mathtools, cancel, graphicx, wrapfig}
+
+%%\begin{thm config/technicalities}
+\theoremstyle{plain}
+\newtheorem{thm}{Satz}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{cor}{Korollar}
+\newtheorem*{beh}{Behauptung}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{exmp}[thm]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Bemerkung}
+
+\usepackage{thmtools}
+
+\declaretheoremstyle[%
+  spaceabove=1.5ex,%
+  spacebelow=6pt,%
+  headfont=\normalfont\itshape,%
+  postheadspace=1em,%
+  qed=\qedsymbol%
+]{mystyle} 
+\declaretheorem[name={Beweis},style=mystyle,unnumbered,
+]{prf}
+
+\renewcommand{\proof}{\prf}
+
+%% paragraph spacing/indentation
+\usepackage{parskip}
+\usepackage{setspace}
+\setlength{\parindent}{0cm}
+
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=\parskip \thm@postskip=0pt
+}
+\makeatother
+%\end{}
+
+%% plotting
+%\usepackage{pgfplots}
+%\usepackage{tikz}
+
+\usepackage{enumitem}
+%\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+
+%% lightning
+\usepackage{marvosym}
+
+%% widecheck 
+%\usepackage{mathabx}
+
+%% sans-serif font
+%\renewcommand{\familydefault}{\sfdefault}
+
+% shortcuts
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Sn}{\mathbb{S}_n}
+\renewcommand{\S}{\mathcal{S}}
+
+\newcommand{\D}{\displaystyle}
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\ph}{\varphi}
+\newcommand{\longto}{\longrightarrow}
+\DeclareMathOperator{\kgV}{\mathrm{kgV}}
+\DeclareMathOperator{\ggT}{\mathrm{ggT}}
+\DeclareMathOperator{\ord}{\mathrm{ord}\,}
+\DeclareMathOperator{\sgn}{\mathrm{sgn}\,}
+\newcommand{\id}{\mathrm{id}}
+
+\DeclareMathOperator{\Fou}{\mathcal{F}\!}
+
+% fancy head/foot
+\usepackage{fancyhdr}
+\fancyhead[L]{Marius Nietschmann} 
+\fancyhead[C]{Blatt 1}
+\fancyhead[R]{29. April 2020}
+
+
+\begin{document}
+\pagestyle{fancy}
+\thispagestyle{plain}
+
+\rule{\textwidth}{.5pt}
+\begin{center}
+\Huge{Numerik II - Übungsblatt 1}
+\end{center}
+
+\rule{\textwidth}{.5pt}
+\text{} \hfill Marius Nietschmann 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%							 %%
+%%   !!!Hier geht's los!!!   %%
+%%							 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Aufgabe 1}
+
+Gegeben sei die Abbildung 
+\[ F : \R^2 \to \R^2, (x,y) \longmapsto 
+\begin{pmatrix}
+	f_1 (x,y) \\ 
+	f_2 (x,y) 
+\end{pmatrix} =
+\begin{pmatrix}
+	x^2 + y^2 - 1 \\ 
+	x^3 - y + .2
+\end{pmatrix}. \] 
+
+\begin{itemize} 
+\item[a)] 
+Wir stellen zunächst die Kurven $ f_i (x,y) = 0 $, $ i = 1,2 $ grafisch dar. 
+
+\begin{figure}[h]
+	\centering 
+	\includegraphics[width=7cm]{Übungsblatt 1 Aufgabe 1a Kurven}
+\end{figure}
+
+Offenbar hat die Gleichung $ F(x,y) = 0 $ genau 2 Lösungen. Als Näherungswert für eine der Lösungen ist $ a_0 = (.8,.6) $ abzulesen. 
+\item[b)] 
+Wir wollen nun $ F(x,y) = 0 $ lösen und nutzen hierzu das Newtonverfahren mit Startwert $ a_0 = (.8,.6) $. Im Folgenden runden wir auf 5 Nachkommastellen. Weiter bezeichne $ JF $ die Jacobi-Matrix von $ F $ und $ \Delta a_k = a_k - a_{k-1} $. 
+\begin{itemize}
+\item[I)] 
+Löse $ JF(a_0) \cdot \Delta a_1^T = -F(a_0) $: 
+\[ \begin{pmatrix}
+	1.60000 & 1.20000 \\ 
+	1.92000 & -1.00000
+\end{pmatrix} \cdot \Delta a_1^T 
+= \begin{pmatrix}
+-.00000 \\ 
+-.11200
+\end{pmatrix}. \] 
+Lösung ist $ \Delta a_1 = (-.03443, .04590) $, also $ a_1 = (.76557, .64590) $. 
+\item[II)] 
+Löse $ JF(a_1) \cdot \Delta a_2^T = -F(a_1) $: 
+\[ \begin{pmatrix}
+	1.53115 & 1.29180 \\ 
+	1.75831 & -1.00000
+\end{pmatrix} \cdot \Delta a_2^T 
+= \begin{pmatrix}
+-.00329 \\ 
+-.00280
+\end{pmatrix}. \] 
+Lösung ist $ \Delta a_2 = (-.00182, -.00039) $, also $ a_2 = (.76376, .64551) $. 
+\item[III)] 
+Löse $ JF(a_2) \cdot \Delta a_3^T = -F(a_2) $: 
+\[ \begin{pmatrix}
+	1.52751 & 1.29102 \\ 
+	1.74997 & -1.00000
+\end{pmatrix} \cdot \Delta a_3^T 
+= \begin{pmatrix}
+-.00000 \\ 
+-.00001
+\end{pmatrix}. \] 
+Lösung ist $ \Delta a_3 = (-.00000, .00000) $, also $ a_3 = (.76375, .64551) $. 
+\end{itemize}
+\end{itemize}
+
+
+\section*{Aufgabe 2}
+
+Gegeben ist nun die Funktion $ P(x) = 3x^3-5x^2-x+1 $. 
+\begin{enumerate}
+\item[a)] Startwert $ x_0 = 2 $, $ x_{k+1} = x_k - \frac{P(x_k)}{P'(x_k)} $: 
+\begin{align*}
+x_1 & = 2 - \frac{3}{15} = \frac{9}{5} = 1.8 \\ 
+x_2 & = \frac{9}{5} - \frac{\frac{62}{125}}{\frac{254}{25}} = \frac{1112}{635} \approx 1.751 181 102 \\ 
+x_3 & \approx 1.751 181 - \frac{.02634}{9.08791} \approx 1.748 282 333 \\ 
+x_4 & \approx 1.748 282 - \frac{.00009}{9.02560} \approx 1.748 272 323 \\ 
+x_5 & \approx 1.748 272 - \frac{.00000}{9.02538} \approx 1.748 272 323 \\ 
+x_6 & \approx 1.748 272 - \frac{.00000}{9.02536} \approx 1.748 272 323 
+\end{align*}
+\item[b)] Startwert $ x_0 = 0 $: \\ 
+$ P(0) = 1, P'(x) = 9x^2 -10x -1 \Longrightarrow P'(0)=-1, P'(0)=-2 $. 
+\begin{align*}
+x_1 &= x_0 - \frac{P(x_0)}{P'(x_0)} = 0 - \frac{1}{-1} = 1 \\ 
+x_2 &= x_1 - \frac{P(x_1)}{P'(x_1)} = 1 - \frac{-2}{-2} = 0 \\ 
+x_3 &= 0 - \frac{1}{-1} = 1 \\ 
+x_4 &= 1 - \frac{-2}{-2} = 0 \\ 
+x_5 &= 0 - \frac{1}{-1} = 1 \\ 
+x_6 &= 1 - \frac{-2}{-2} = 0 
+\end{align*} 
+Offenbar liefert das Newtonverfahren für $ x_0=0 $ alternierend $ 0 $ und $ 1 $. Dies ist daran zu erklären, dass das Newtonverfahren im ersten Schritt $ 0 $ auf $ 1 $ abbildet. Da aber bei $ 1 $ Funktionswert und Ableitung übereinstimmen ($ P(1)=P'(1)=-2 $), also $ \frac{P(1)}{P'(1)}=1 $, und $ 1-1=0 $, liefert das Newtonverfahren, also $ 0 $. Demnach werden $ 0 $ und $ 1 $ immer aufeinander abgebildet und das Newtonverfahren konvergiert nicht. 
+\end{enumerate}
+
+
+\section*{Aufgabe 3}
+Gegeben ist folgende Polynomfunktion: 
+\[ P(x) = 254 520 x^5 - 580 044 x^4 + 444 746 x^3 - 77 171 x^2 - 77 910 x + 38 955. \] 
+\begin{itemize}
+\item[a)] Newton ab $ x_0=0 $: 
+\begin{align*}
+x_0 &= 0 \\ 
+x_1 &= 0 - \frac{38 955}{-77 910} = \frac{1}{2} \\ 
+x_2 &= \frac{1}{2} - \frac{\frac{16 003}{2}}{-32 006} = \frac{3}{4} \\ 
+x_3 &= \frac{3}{4} - \frac{\frac{206115}{128}}{-\frac{618345}{32}} = \frac{5}{6} \\ 
+x_4 &= \frac{5}{6} - \frac{\frac{6715}{18}}{-\frac{26860}{3}} = \frac{7}{8} 
+\end{align*} 
+Man vermutet, das nächste Glied der Newton-Iterationsfolge ist $ \frac{9}{10} $ (und die Folge gegen 1 konvergiert). 
+\item[b)] Allerdings: 
+\[ x_5 = \frac{7}{8} - \frac{\frac{734069}{4096}}{\frac{104867}{512}} = 0. \] 
+Damit wiederholen sich die Folgenglieder periodisch (im Zyklus $ 0, \frac{1}{2}, \frac{3}{4}, \frac{5}{6}, \frac{7}{8} $). 
+Insbesondere konvergiert die Iteration nicht. 
+\end{itemize}
+
+
+\section*{Aufgabe 4}
+
+\begin{tabular}{l|c|c|c}
+Differentialgeleichung & linear & homogen & konst. Koeff. \\ 
+\hline 
+a) $ x^2y' = y^2 $ & nein & ja & nein \\ 
+b) $ y'''-4y' = 2\sin(\omega x+\ph) $ & ja & nein & ja \\ 
+c) $ y^{(4)} = y + x^2\exp(-x) $ & ja & nein & ja \\ 
+d) $x^2y'' + xy' + (x^2-1)y = 0 $ & ja & ja & nein \\ 
+\end{tabular} 
+
+
+\section*{Aufgabe 5} 
+
+\begin{itemize}
+\item[a)] Löse $ y' = (1-y)^2 $. 
+\[ \overset{u = 1-y}{\Longleftrightarrow} u' = \frac{du}{dx} = \frac{du}{dy} \frac{dy}{dx} = -y' = -u^2. \] 
+Als Lösung vermuten wir $ u(x) = x^\alpha $ für ein $ \alpha \in \Z $: $ \alpha - 1 = 2\alpha \Longleftrightarrow \alpha = -1 $. \\ 
+Also $ u(x) = x^{-1} = \frac{1}{x} $ (Probe: $ u'(x) = \left( \frac{1}{x} \right)' = -\frac{1}{x^2} = -u(x)^2 $). \\ 
+Damit ergibt sich für $ y $: 
+\[ y(x) = \frac{x-1}{x}. \] 
+\item[b)] Löse $ y'(1+x^2) = xy $. 
+\[ \overset{1+x^2\neq0}{\Longleftrightarrow} y' = \frac{x}{1+x^2}y. \] 
+Bei $ y(c) = a $, $ (c,a) \in\R^2 $,  ergibt sich für die Lösung: 
+\begin{align*}
+y(x) 
+&= a\exp\left(\int_c^x \frac{t}{1+t^2} \, dt \right) 
+= a\exp\left(\frac{1}{2} \int_{1+c^2}^{1+x^2} \frac{1}{u} \, du \right) \\ 
+&= a\exp\left(\frac{1}{2}\left(\ln\left(1+x^2\right) - \ln\left(1+c^2\right)\right) \right) 
+= a\exp\left(\ln\sqrt{\frac{1+x^2}{1+c^2}}\right) \\ 
+&= a\sqrt{\frac{1+x^2}{1+c^2}}.
+\end{align*}
+\item[c)] Löse $ y' + y\cos x = 0 $, $ y\left(\frac{\pi}{2}\right) = 2\pi $. 
+\[ y(x) = 2\pi\exp\left(\int_{\frac{\pi}{2}}^x - \cos t \, dt \right) = 2\pi\exp(1-\sin x). \] 
+\end{itemize}
+
+
+\section*{Aufgabe 6}
+
+\begin{itemize}
+\item[i)] 
+$ \exp(y) \frac{dy}{dx} = \exp(-x)-\exp(y) $, $ y(0)=0 $ 
+\item[ii)] 
+$ y' = 2\sqrt{|y|} $, $ y(0)=0 $. \\ 
+\end{itemize} 
+
+\begin{itemize}
+\item[a)] Existenz und Eindeutigkeit von Lösungen der AWP \\ 
+Es lässt sich i) ausdrücken als $ y' = \exp(-(x+y))-1 $, $ y(0)=0 $. Die rechte Seite ist in $ y $ stetig differenzierbar, damit erfüllt sie eine lokale Lipschitzbedingung und das AWP besitzt eine eindeutige Lösung (siehe b)). \\ 
+Die rechte Seite aus ii) ist stetig, erfüllt aber bei Null keine Lipschitzbedingung, denn es gilt für beliebiges $ \ep > 0 $: 
+$ \underset{y\in B_\ep (0)}{\sup} (2\sqrt{|y|})' = \underset{y\in B_\ep (0)}{\sup} \frac{1}{\sqrt{|y|}} = \infty $. Folglich existiert keine eindeutige Lösung der DGL. Offenbar ist nämlich sowohl $ y \equiv 0 $ als auch $ y = x|x| = x^2\sgn x $ Lösung des AWPs. Lösung ist sogar für $ a \leq 0 \leq b \in \R $: 
+\[ y(x) = 1_{(b,\infty)}(x) \cdot (x-b)^2 - 1_{(-\infty,a)}(x) \cdot (x-a)^2. \] 
+\item[b)] 
+Wir lösen nun i). Setze $ u = \exp y $, dann: $ u' = -u + \exp(-x) $, $ u(0)=1 $. \\ 
+homogen: $ u_0 (x) = \exp(-x) $, 
+inhomogen: $ u(x) = u_0 (x) \left(1+\int\limits_0^x \frac{\exp(-t)}{\exp(-t)} \, dt \right) = (1+x)\exp(-x) $. 
+Damit folgt für $ y $: 
+\[ y(x) = \ln(x+1)-x. \] 
+\end{itemize}
+
+\end{document}
